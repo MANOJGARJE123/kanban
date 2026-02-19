@@ -1,8 +1,8 @@
-import organizationService from './organization.service.js';
+import { createOrganization as createOrganizationService, getOrganizationById as getOrganizationByIdService } from './organization.service.js';
 
 export const createOrganization = async (req, res, next) => {
     try {
-        const data = await organizationService.createOrganization(req.body);
+        const data = await createOrganizationService(req.body);
         res.status(201).json(data);
     } catch (error) {
         next(error);
@@ -11,7 +11,7 @@ export const createOrganization = async (req, res, next) => {
 
 export const getOrganizationById = async (req, res, next) => {
     try {
-        const data = await organizationService.getOrganizationById(req.params.id);
+        const data = await getOrganizationByIdService(req.params.id);
         res.status(200).json(data);
     } catch (error) {
         next(error);
