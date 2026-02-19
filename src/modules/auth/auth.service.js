@@ -1,12 +1,11 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import pool from '../config/db.js';
+import { createUser } from './auth.repository.js';
 
 
 export const register = async (data) => {
-    const existingUser = await pool.query(
-        'select * from users where email = $1', [data.email]
-    );
+    const existingUser = await findUserByEmail(data.email);
 
     if (existingUser.rows.length > 0) {
         throw new Error('User already exists');
@@ -14,10 +13,7 @@ export const register = async (data) => {
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    const result = await pool.query (
-        'INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id',
-        [data.email, hashedPassword]
-    )
+    const result = await createUser(data.email, hashedPassword);
 
     return {
         id: result.rows[0].id,
