@@ -3,6 +3,8 @@ import authRoutes from "./modules/auth/auth.routes.js";
 import organizationRoutes from "./modules/organization/organization.route.js";
 import boardRoutes from "./modules/boards/board.route.js";
 import cookieParser from "cookie-parser";
+import errorHandler from "./middlewares/errorHandler.js";
+import cors from "cors"
 
 const app = express();
 
