@@ -32,7 +32,7 @@ export const login = async (data) => {
         throw new Error('Invalid email or password');
     } 
 
-    const token = generateJwtToken({ id: user.id, email: user.email });
+    const token = generateJwtToken({ id: user.id, email: user.email});
 
     return {
         token,
