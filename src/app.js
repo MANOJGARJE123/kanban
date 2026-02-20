@@ -1,16 +1,18 @@
 import express from "express";
 import authRoutes from "./modules/auth/auth.routes.js";
 import organizationRoutes from "./modules/organization/organization.route.js";
+import boardRoutes from "./modules/boards/board.route.js";
 import cookieParser from "cookie-parser";
 
-app.use(cookieParser());
 const app = express();
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/organizations", organizationRoutes);
+app.use("/api/boards", boardRoutes);
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK" });
