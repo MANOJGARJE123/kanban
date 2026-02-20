@@ -7,6 +7,11 @@ import errorHandler from "./middlewares/errorHandler.js";
 import cors from "cors"
 
 const app = express();
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 
 app.use(cookieParser());
 app.use(express.json());
