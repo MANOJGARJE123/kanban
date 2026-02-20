@@ -1,5 +1,4 @@
-import {
-	createColumn as createColumnRepo,
+import {createColumn as createColumnRepo,
 	getColumnById as getColumnByIdRepo,
 	reorderColumns as reorderColumnsRepo,
 	deleteColumn as deleteColumnRepo
