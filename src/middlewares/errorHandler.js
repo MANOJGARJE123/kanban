@@ -1,0 +1,13 @@
+import express from 'express';
+
+const errorHandler = (err, req, res, next) => {
+    console.error('Error:', err.message)
+    console.error(err.stack);
+
+    res.status(500).json({
+        success: false,
+        message: "Internal Server Error"
+    });
+}
+
+export default errorHandler;
