@@ -1,7 +1,9 @@
 import express from "express";
 import authRoutes from "./modules/auth/auth.routes.js";
 import organizationRoutes from "./modules/organization/organization.route.js";
+import cookieParser from "cookie-parser";
 
+app.use(cookieParser());
 const app = express();
 
 app.use(express.json());
