@@ -23,3 +23,11 @@ export const getBoardById = async (id) => {
     )
     return result.rows[0];
 }
+
+export const deleteBoard = async (id) => {
+    const result = await pool.query(
+        'DELETE FROM boards WHERE id = $1 RETURNING id',
+        [id]
+    );
+    return result.rows[0];
+}

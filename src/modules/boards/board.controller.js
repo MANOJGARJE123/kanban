@@ -26,3 +26,12 @@ export const getBoardById = async (req, res, next) => {
         next(error);
     }
 }
+
+export const deleteBoard = async (req, res, next) => {
+    try {
+        const data = await boardService.deleteBoard(req.params.id);
+        res.status(200).json(data);
+    } catch (error) {
+        next(error);
+    }
+}

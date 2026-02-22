@@ -1,4 +1,4 @@
-import { createBoard as createBoardRepo, getBoardById as getBoardByIdRepo, getAllBoardsOrganizationId as getAllBoardsOrganizationIdRepo } from './board.repository.js';
+import { createBoard as createBoardRepo, getBoardById as getBoardByIdRepo, getAllBoardsOrganizationId as getAllBoardsOrganizationIdRepo, deleteBoard as deleteBoardRepo } from './board.repository.js';
 
 export const createBoard = async (data) => {
     const result = await createBoardRepo(data);
@@ -12,5 +12,10 @@ export const getBoardById = async (id) => {
 
 export const getAllBoardsOrganizationId = async (organizationId) => {
     const result = await getAllBoardsOrganizationIdRepo(organizationId);
+    return result;
+}
+
+export const deleteBoard = async (id) => {
+    const result = await deleteBoardRepo(id);
     return result;
 }
