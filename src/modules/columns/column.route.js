@@ -5,7 +5,7 @@ import isAuth from '../../middlewares/isAuth.js';
 const router = express.Router();
 
 router.post('/', isAuth, columnController.createColumn);
-router.put('/reorder', isAuth, columnController.reorderColumns);
+router.patch('/reorder', isAuth, columnController.reorderColumns);
 router.get('/:id', isAuth, columnController.getColumnById);
 router.delete('/:id', isAuth, columnController.deleteColumn);
 
