@@ -39,3 +39,11 @@ export const deleteColumn = async (id) => {
     );
     return result.rows[0];
 };
+
+export const getColumnsByBoardIdRepo = async (boardId) => {
+    const result = await pool.query(
+        'SELECT id,name, board_id, position, created_at FROM board_columns WHERE board_id = $1 order by position',
+        [boardId]
+    );
+    return result.rows;
+};

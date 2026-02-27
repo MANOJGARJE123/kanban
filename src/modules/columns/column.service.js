@@ -34,3 +34,13 @@ export const deleteColumn = async (id) => {
     const result = await deleteColumnRepo(id);
     return result;
 };
+
+export const fetchCoumnsOfBoard = async (boardId) => {
+    if (!boardId) {
+        const error = new Error('boardId is required');
+        error.statusCode = 400;
+        throw error;
+    }
+    const result = await getColumnsByBoardIdRepo(boardId);
+    return result;
+}
