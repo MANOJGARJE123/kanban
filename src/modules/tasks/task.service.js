@@ -12,6 +12,11 @@ export const createTask = async (data) => {
 };
 
 export const getTasks = async (boardId, columnId) => {
+    if (!boardId) {
+        const error = new Error('boardId is required');
+        error.statusCode = 400;
+        throw error;
+    }
     const result = await getTasksRepo(boardId, columnId);
     return result;
 };

@@ -9,6 +9,8 @@ export const createTask = async (data) => {
 };
 
 export const getTasks = async (boardId, columnId) => {
+    console.log("boardid", boardId);
+    console.log("columnid", columnId);
     let query = 'SELECT t.id, t.title, t.description, t.column_id, t.position, t.created_at FROM tasks t JOIN board_columns bc ON t.column_id = bc.id WHERE bc.board_id = $1';
     let params = [boardId];
     let paramCount = 1;
@@ -20,8 +22,12 @@ export const getTasks = async (boardId, columnId) => {
     }
 
     query += ' ORDER BY t.position';
+    
+    console.log("query", query);
+    console.log("params", params);
 
     const result = await pool.query(query, params);
+    console.log("Result:", result.rows);
     return result.rows;
 };
 
