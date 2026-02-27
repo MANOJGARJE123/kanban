@@ -1,4 +1,9 @@
-import { createBoard as createBoardRepo, getBoardById as getBoardByIdRepo, getAllBoardsOrganizationId as getAllBoardsOrganizationIdRepo, deleteBoard as deleteBoardRepo } from './board.repository.js';
+import { createBoard as createBoardRepo,
+    getBoardById as getBoardByIdRepo,
+    getAllBoardsOrganizationId as getAllBoardsOrganizationIdRepo, 
+    deleteBoard as deleteBoardRepo,
+    getColumnsByBoardId as getColumnsByBoardIdRepo,
+    getTasksByColumnId as getTasksByColumnIdRepo } from './board.repository.js';
 
 export const createBoard = async (data) => {
     if (!data.name || !data.organization_id) {
@@ -12,8 +17,29 @@ export const createBoard = async (data) => {
 }
 
 export const getBoardById = async (id) => {
-    const result = await getBoardByIdRepo(id);
-    return result;
+    const board = await getBoardByIdRepo(id);
+    if (!board) {
+        const error = new Error('Board not found');
+        error.statusCode = 404;
+        throw error;
+    }
+
+    const columns = await getColumnsByBoardIdRepo(id);
+
+    const columnsWithTasks = await Promise.all(columns.map(async (col) => {
+        const tasks = await getTasksByColumnIdRepo(col.id);
+        return {
+            id: col.id,
+            name: col.name,
+            tasks: tasks.map(t => ({ id: t.id, title: t.title }))
+        };
+    }));
+
+    return {
+        id: board.id,
+        name: board.name,
+        columns: columnsWithTasks
+    };
 }
 
 export const getAllBoardsOrganizationId = async (organizationId) => {

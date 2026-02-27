@@ -3,7 +3,7 @@ import {
     getOrganizationById as getOrganizationByIdService, 
     deleteOrganization as deleteOrganizationService,
     addUserToOrganization as addUserToOrganizationService,
-    getUserOrganizations as getUserOrganizationsService,
+    getUserOrganization as getUserOrganizationService,
     getOrganizationUsers as getOrganizationUsersService,
     deleteUserFromOrganization as deleteUserFromOrganizationService
 } from './organization.service.js';
@@ -65,9 +65,9 @@ export const deleteUserFromOrganization = async (req, res, next) => {
         next(error);
     }
 };
-export const getUserOrganizations = async (req, res, next) => {
+export const getUserOrganization = async (req, res, next) => {
     try {
-        const data = await getUserOrganizationsService(req.params.userId);
+        const data = await getUserOrganizationService(req.params.userId);
         res.status(200).json({ success: true, data });
     } catch (error) {
         next(error);

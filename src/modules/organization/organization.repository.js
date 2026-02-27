@@ -9,8 +9,8 @@ export const createOrganization = async (userId,data) => {
 
     const organization = result.rows[0];
     await pool.query(
-        'INSERT into user_organizations (user_id, organization_id) values ($1, $2)',
-        [userId, organization.id]
+        'update users set organization_id = $1 where id = $2',
+        [organization.id, userId]
     );
 
     return organization;  
@@ -18,7 +18,7 @@ export const createOrganization = async (userId,data) => {
 
 export const getOrganizationById = async (id) => {
     const result = await pool.query(
-        'SELECT id, name from organizations WHERE id = $1',
+        'select id, name from organizations WHERE id = $1',
         [id]
     )
     if (result.rows.length === 0) {
@@ -45,8 +45,8 @@ export const addUserToOrganization = async (userId, organizationId) => {
         );
         const details = detailsResult.rows[0] || {};
         const result = await pool.query(
-            'INSERT into user_organizations (user_id, organization_id) values ($1, $2) returning user_id, organization_id, created_at',
-            [userId, organizationId]
+            'UPDATE users SET organization_id = $1 WHERE id = $2 RETURNING id, email, organization_id',
+            [organizationId, userId]
         );
         logger.info(`User ${details.user_email || userId} added to organization ${details.organization_name || organizationId}`);
         return result.rows[0];
@@ -68,21 +68,20 @@ export const deleteUserFromOrganization = async (userId, organizationId) => {
     }
     
     const details = detailsResult.rows[0];
-    
     const result = await pool.query(
-        'DELETE from user_organizations where user_id = $1 and organization_id = $2 RETURNING user_id, organization_id',
+        'UPDATE users SET organization_id = NULL WHERE id = $1 AND organization_id = $2 RETURNING id, organization_id',
         [userId, organizationId]
     );
-    
+
     if (result.rows.length === 0) {
         logger.warn(`User ${userId} not found in organization ${organizationId}`);
         throw new Error('User not found in organization');
     }
-    
+
     logger.info(`User ${details.user_email} removed from organization ${details.organization_name}`);
-    
+
     return {
-        userId: result.rows[0].user_id,
+        userId: result.rows[0].id,
         organizationId: result.rows[0].organization_id,
         userEmail: details.user_email,
         organizationName: details.organization_name
@@ -92,7 +91,7 @@ export const deleteUserFromOrganization = async (userId, organizationId) => {
 export const getUserOrganizations = async (userId) => {
     logger.info(`Fetching organizations for user ${userId}`);
     const result = await pool.query(
-        'select o.id, o.name from organizations o join user_organizations uo on o.id = uo.organization_id where uo.user_id = $1',
+        'select o.id, o.name from organizations o join users u on o.id = u.organization_id where u.id = $1',
         [userId]
     )
     return result.rows;
@@ -100,7 +99,7 @@ export const getUserOrganizations = async (userId) => {
 
 export const getOrganizationUsers = async (organizationId) => {
     const result = await pool.query(
-        'SELECT u.id, u.email from users u join user_organizations uo ON u.id = uo.user_id WHERE uo.organization_id = $1',
+        'SELECT u.id, u.email from users u WHERE u.organization_id = $1',
         [organizationId]
     );
     return result.rows;

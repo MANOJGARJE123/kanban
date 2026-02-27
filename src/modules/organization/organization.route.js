@@ -4,7 +4,7 @@ import isAuth from '../../middlewares/isAuth.js';
 
 const router = express.Router();
 
-router.get('/user/:userId/organizations', isAuth, organizationController.getUserOrganizations);
+router.get('/user/:userId/organization', isAuth, organizationController.getUserOrganization);
 
 router.post('/', isAuth, organizationController.createOrganization);
 router.get('/:id', isAuth, organizationController.getOrganizationById);

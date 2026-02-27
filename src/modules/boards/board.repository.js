@@ -24,6 +24,22 @@ export const getBoardById = async (id) => {
     return result.rows[0];
 }
 
+export const getColumnsByBoardId = async (boardId) => {
+    const result = await pool.query(
+        'SELECT id, name, board_id FROM board_columns WHERE board_id = $1',
+        [boardId]
+    );
+    return result.rows;
+}
+
+export const getTasksByColumnId = async (columnId) => {
+    const result = await pool.query(
+        'SELECT id, title, column_id FROM tasks WHERE column_id = $1',
+        [columnId]
+    );
+    return result.rows;
+}
+
 export const deleteBoard = async (id) => {
     const result = await pool.query(
         'DELETE from boards where id = $1 returning id',

@@ -3,7 +3,7 @@ import {
     getOrganizationById as getOrganizationByIdRepo, 
     deleteOrganization as deleteOrganizationRepo,
     addUserToOrganization as addUserToOrganizationRepo,
-    getUserOrganizations as getUserOrganizationsRepo,
+    getUserOrganizations as getUserOrganizationRepo,
     getOrganizationUsers as getOrganizationUsersRepo,
     deleteUserFromOrganization as deleteUserFromOrganizationRepo
 } from './organization.repository.js';
@@ -53,11 +53,12 @@ export const deleteUserFromOrganization = async (userId, organizationId) => {
     };
 }   
 
-export const getUserOrganizations = async (userId) => {
-    logger.info(`Fetching organizations for user ${userId}`);
-    const result = await getUserOrganizationsRepo(userId);
-    logger.info(`Fetched ${result.length} organizations for user ${userId}`);
-    return result;
+export const getUserOrganization = async (userId) => {
+    logger.info(`Fetching organization for user ${userId}`);
+    const result = await getUserOrganizationRepo(userId);
+    const org = result && result.length ? result[0] : null;
+    logger.info(`Fetched organization for user ${userId}: ${org ? org.id : 'none'}`);
+    return org;
 }
 
 export const getOrganizationUsers = async (organizationId) => {

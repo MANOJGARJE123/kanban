@@ -12,7 +12,7 @@ export const createBoard = async (req, res, next) => {
 export const getBoardsByOrganizationId = async (req, res, next) => {
     try {
         const data = await boardService.getAllBoardsOrganizationId(req.params.organizationId);
-        res.status(200).json({ success: true, data });
+        res.status(200).json({ success: true, message: "Boards fetched successfully", data });
     } catch (error) {
         next(error);
     }
@@ -21,7 +21,7 @@ export const getBoardsByOrganizationId = async (req, res, next) => {
 export const getBoardById = async (req, res, next) => {
     try {
         const data = await boardService.getBoardById(req.params.id);
-        res.status(200).json({ success: true, data });
+        res.status(200).json({ success: true, message: "Boards fetched successfully", data  });
     }catch (error) {
         next(error);
     }
